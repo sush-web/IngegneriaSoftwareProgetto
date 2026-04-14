@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AlmaTutoring</title>
+ 
+  <style>
+    :root,[data-theme="light"]{
+      /* Modificato --color-bg con un gradiente delicato */
+      --color-bg: linear-gradient(135deg, #ff0000b9 0%, #dfd04ae3 50%, #ffffff 100%);
+      --color-surface:#ffffff;--color-surface-2:#f9f8f6;
+      --color-surface-offset:#eeece8;--color-border:oklch(0.25 0.01 50/0.12);
+      --color-divider:oklch(0.25 0.01 50/0.08);
+      --color-text:#1a1816;--color-text-muted:#6b6966;--color-text-faint:#b0afad;
+      --color-text-inverse:#ffffff;
+      --color-primary:#d4003e;--color-primary-hover:#a80032;--color-primary-active:#800027;
+      --shadow-sm:0 1px 2px oklch(0.2 0.01 50/0.06);
+      --shadow-md:0 4px 12px oklch(0.2 0.01 50/0.08);
+      --shadow-lg:0 12px 32px oklch(0.2 0.01 50/0.14);
+      --radius-md:0.5rem;--radius-lg:0.75rem;--radius-xl:1rem;
+      --transition:180ms cubic-bezier(0.16,1,0.3,1);
+      --font-display:'Instrument Serif',Georgia,serif;
+      --font-body:'Inter','Helvetica Neue',sans-serif;
+      --text-xs:clamp(0.75rem,0.7rem + 0.25vw,0.875rem);
+      --text-sm:clamp(0.875rem,0.8rem + 0.35vw,1rem);
+      --text-base:clamp(1rem,0.95rem + 0.25vw,1.125rem);
+      --text-lg:clamp(1.125rem,1rem + 0.75vw,1.5rem);
+      --text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+      --space-2:.5rem;--space-3:.75rem;--space-4:1rem;
+      --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+    }
+    [data-theme="dark"]{
+      /* Modificato --color-bg con un gradiente scuro coerente */
+      --color-bg: linear-gradient(135deg, #141312 0%, #3b1f1a 50%, #5f2837 100%);
+      --color-surface:#1c1b19;--color-surface-2:#222120;
+      --color-surface-offset:#2a2927;--color-border:oklch(1 0 0/0.08);
+      --color-divider:oklch(1 0 0/0.06);
+      --color-text:#cdc9c4;--color-text-muted:#7a7774;--color-text-faint:#525050;
+      --color-text-inverse:#141312;
+      --color-primary:#f0446a;--color-primary-hover:#f96585;--color-primary-active:#e02255;
+      --shadow-sm:0 1px 2px oklch(0 0 0/0.25);
+      --shadow-md:0 4px 12px oklch(0 0 0/0.35);
+      --shadow-lg:0 12px 32px oklch(0 0 0/0.5);
+    }
+    @media(prefers-color-scheme:dark){:root:not([data-theme]){
+      --color-bg: linear-gradient(135deg, #141312 0%, #1c1b19 50%, #2e141b 100%);
+      --color-surface:#1c1b19;--color-surface-offset:#2a2927;
+      --color-border:oklch(1 0 0/0.08);--color-divider:oklch(1 0 0/0.06);
+      --color-text:#cdc9c4;--color-text-muted:#7a7774;--color-text-faint:#525050;
+      --color-text-inverse:#141312;--color-primary:#f0446a;
+      --color-primary-hover:#f96585;--color-primary-active:#e02255;
+      --shadow-lg:0 12px 32px oklch(0 0 0/0.5);
+    }}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    body{
+      min-height:100dvh;
+      font-family:var(--font-body);
+      font-size:var(--text-base);
+      color:var(--color-text);
+      background:var(--color-bg);
+      background-attachment: fixed; /* Aggiunto per stabilizzare il gradiente */
+      display:flex;
+      flex-direction:column
+    }
+    button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+    a,button{transition:color var(--transition),background var(--transition),box-shadow var(--transition),transform var(--transition)}
+    :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-md)}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
+
+    .site-header{position:sticky;top:0;z-index:100;background:var(--color-surface);border-bottom:1px solid var(--color-border);box-shadow:var(--shadow-sm);padding:var(--space-3) var(--space-6);display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
+    .header-logo{display:flex;align-items:center;gap:var(--space-3);text-decoration:none}
+    .header-logo-text{font-family:var(--font-display);font-size:var(--text-lg);font-weight:400;color:var(--color-primary);line-height:1}
+    .theme-toggle{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-md);color:var(--color-text-muted)}
+    .theme-toggle:hover{background:var(--color-surface-offset);color:var(--color-text)}
+
+    .main{flex:1;display:flex;align-items:center;justify-content:center;padding:var(--space-12) var(--space-6)}
+    .welcome-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);padding:clamp(var(--space-8),6vw,var(--space-16));width:100%;max-width:460px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--space-6)}
+    .app-logo{display:flex;flex-direction:column;align-items:center;gap:var(--space-4)}
+    .app-title{font-family:var(--font-display);font-size:var(--text-2xl);font-weight:400;line-height:1.1;letter-spacing:-0.02em;color:var(--color-text)}
+    .app-title span{color:var(--color-primary)}
+    .app-subtitle{font-size:var(--text-sm);color:var(--color-text-muted);max-width:36ch;line-height:1.7}
+    .divider{width:100%;height:1px;background:var(--color-divider)}
+    .btn-login{width:100%;display:flex;align-items:center;justify-content:center;gap:var(--space-2);padding:var(--space-4) var(--space-6);background:var(--color-primary);color:var(--color-text-inverse);border-radius:var(--radius-lg);font-size:var(--text-sm);font-weight:600;letter-spacing:0.02em;border:none;cursor:pointer;box-shadow:var(--shadow-sm)}
+    .btn-login:hover{background:var(--color-primary-hover);box-shadow:var(--shadow-md);transform:translateY(-1px)}
+    .btn-login:active{background:var(--color-primary-active);transform:translateY(0)}
+    .site-footer{text-align:center;padding:var(--space-6);color:var(--color-text-faint);font-size:var(--text-xs);border-top:1px solid var(--color-divider)}
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Salta al contenuto</a>
+  <header class="site-header" role="banner">
+    <a href="#" class="header-logo" aria-label="AlmaTutoring — Home">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+        <rect width="34" height="34" rx="8" fill="var(--color-primary)"/>
+        <path d="M9 11v8.5a8 8 0 0 0 16 0V11" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+        <line x1="6" y1="11" x2="28" y2="11" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+        <line x1="22.5" y1="11" x2="22.5" y2="8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <line x1="19.5" y1="8" x2="25.5" y2="8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span class="header-logo-text">AlmaTutoring</span>
+    </a>
+    <button class="theme-toggle" data-theme-toggle aria-label="Passa alla modalità scura">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </header>
+
+  <main id="main-content" class="main" role="main">
+    <div class="welcome-card">
+      <div class="app-logo">
+        <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-label="Logo UniBO App">
+          <rect width="72" height="72" rx="18" fill="var(--color-primary)"/>
+          <path d="M18 24v18a18 18 0 0 0 36 0V24" stroke="white" stroke-width="4.5" stroke-linecap="round"/>
+          <line x1="12" y1="24" x2="60" y2="24" stroke="white" stroke-width="4.5" stroke-linecap="round"/>
+          <line x1="48" y1="24" x2="48" y2="17" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="41" y1="17" x2="55" y2="17" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+        <h1 class="app-title">AlmaTutoring</h1>
+      </div>
+      <p class="app-subtitle">Accedi con le credenziali istituzionali.</p>
+      <div class="divider" role="separator" aria-hidden="true"></div>
+      <button class="btn-login" onclick="window.location.href='unibo-login.html'" aria-label="Accedi al portale">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <polyline points="10 17 15 12 10 7"/>
+          <line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+        Login
+      </button>
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <p>© 2026 AlmaTutoring — Progetto di Ingegneria del Software</p>
+  </footer>
+
+  <script>
+    (function(){
+      var t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+      var d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+      r.setAttribute('data-theme',d);setIcon(d);
+      t&&t.addEventListener('click',function(){
+        d=d==='dark'?'light':'dark';
+        r.setAttribute('data-theme',d);setIcon(d);
+      });
+      function setIcon(m){if(!t)return;t.innerHTML=m==='dark'
+        ?'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+        :'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';}
+    })();
+  </script>
+</body>
+</html>
